@@ -1,27 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../styles.css";
 import MovieCard from "./MovieCard";
 
-export default function MoviesGrid() {
-  // useState used to assigning values to the components it will rerender the components
-  // when change occured, we will declare the state like below
-  // 'movies' is the variable name of the state, whenever any changes occured to the vairable it gets rerenderd
-  // 'setMovies' is the function used to assign the values in the components
-  // '[]' inside useState calling used to set initial value for the components
-  const [movies, setMovies] = useState([]);
+export default function MoviesGrid({ movies, watchlist, toggleWatchlist }) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const [genre, setGenre] = useState("All Genres");
   const [rating, setRating] = useState("All");
-
-  // useEffect is used to set values to the components using state
-  // [] this is where we use to call useEffect whenever required
-  useEffect(() => {
-    //fetch is used to fetch data in javascript asynchronoulsy
-    fetch("movies.json")
-      .then((response) => response.json())
-      .then((data) => setMovies(data));
-  }, []);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -115,7 +100,12 @@ export default function MoviesGrid() {
 
       <div className="movies-grid">
         {filteredMovies.map((movie) => (
-          <MovieCard movie={movie} key={movie.id}></MovieCard>
+          <MovieCard
+            movie={movie}
+            key={movie.id}
+            toggleWatchlist={toggleWatchlist}
+            isWatchlisted = {watchlist.includes(movie.id)}
+          ></MovieCard>
         ))}
       </div>
     </div>
